@@ -1,0 +1,35 @@
+{
+    "juejin": {
+      "tag": "div",
+      "id": "article-root",
+      "title_selector": {"itemprop": "headline"},
+      "keywords_selector": {"itemprop": "keywords"},
+      "code_selector": {"item": "code", "class": "hljs"},
+      "author_info_selectors": {
+        "name": ".name",
+        "title": ".position",
+        "url": ".user-item[href]",
+        "image_url": ".avatar-img[src]"
+      }
+    },
+    "zhihu": {
+      "tag": "div",
+      "id": "",
+      "class": "RichText ztext Post-RichText css-1g0fqss",
+      "title_selector": {"data-rh": "true", "property": "og:title"},
+      "keywords_selector": {"name": "keywords"},
+      "code_selector": {"item": "div", "class": "highlight"},
+      "author_info_selectors": {
+        "name": "meta[itemprop='name'][content]",
+        "title": ".AuthorInfo-badge",
+        "url": "meta[itemprop='url'][content]",
+        "image_url": "meta[itemprop='image'][content]"
+      }
+    },
+    "csdn": {
+      "tag": "div",
+      "id": "content_views",
+      "class": ""
+    }
+
+  }
