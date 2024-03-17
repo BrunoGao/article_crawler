@@ -7,6 +7,7 @@ import random
 import json
 from datetime import datetime
 import re
+from upload_picture import PictureUploader
 
 html_str = """
 <!DOCTYPE html>
@@ -143,22 +144,14 @@ class ArticleCrawler():
 
     def deal_code(self, soup):
         code_blocks = soup.find_all('code', class_=lambda x: x and re.search(r'(hljs|language-)', x))
-        #code_selector = self.config.get('code_selector', {})
-        
-        #print(code_selector)
-        #code_blocks = soup.find_all(code_selector['item'], class_=code_selector['class'])
-        print(code_blocks)
+    
+        #print(code_blocks)
         for code_block in code_blocks:
         
             #lang = code_block.get('lang', None)  # 使用get方法安全地获取lang属性，如果不存在则返回None
             lang_classes = [cls for cls in code_block.get('class', []) if 'language-' in cls]
             lang = lang_classes[0].split('-')[1] if lang_classes else 'plaintext'  # Default to 'plaintext' if no language class found
         
-            if lang:
-                print(f"Found a code block with lang='{lang}'")
-            else:
-                lang = "plaintext"
-            
             code_content = code_block.text
             formatted_code = f"```{lang}\n{code_content}\n```"
             code_block.replace_with(BeautifulSoup(formatted_code, 'html.parser'))
@@ -167,6 +160,8 @@ class ArticleCrawler():
         image_tags = soup.find_all('img')
         for img in image_tags:
             src = img.get('src')
+            uploader = PictureUploader(config_path='uploader_config.ini')
+            src = uploader.upload_picture(pic_url=src) if (src.startswith("http")) else src
             alt = img.get('alt', '')
             markdown_image = f"![{alt}]({src})\n\n"
             img.replace_with(BeautifulSoup(markdown_image, 'html.parser'))
